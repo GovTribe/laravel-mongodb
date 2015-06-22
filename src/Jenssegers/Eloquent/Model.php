@@ -22,12 +22,6 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
      */
     public function hasOne($related, $foreignKey = null, $localKey = null)
     {
-        // Check if it is a relation with an original model.
-        if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
-        {
-            return parent::hasOne($related, $foreignKey, $localKey);
-        }
-
         $foreignKey = $foreignKey ?: $this->getForeignKey();
 
         $instance = new $related;
@@ -49,12 +43,6 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
      */
     public function morphOne($related, $name, $type = null, $id = null, $localKey = null)
     {
-        // Check if it is a relation with an original model.
-        if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
-        {
-            return parent::morphOne($related, $name, $type, $id, $localKey );
-        }
-
         $instance = new $related;
 
         list($type, $id) = $this->getMorphs($name, $type, $id);
@@ -76,12 +64,6 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
      */
     public function hasMany($related, $foreignKey = null, $localKey = null)
     {
-        // Check if it is a relation with an original model.
-        if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
-        {
-            return parent::hasMany($related, $foreignKey, $localKey);
-        }
-
         $foreignKey = $foreignKey ?: $this->getForeignKey();
 
         $instance = new $related;
@@ -103,12 +85,6 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
      */
     public function morphMany($related, $name, $type = null, $id = null, $localKey = null)
     {
-        // Check if it is a relation with an original model.
-        if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
-        {
-            return parent::morphMany($related, $name, $type, $id, $localKey);
-        }
-
         $instance = new $related;
 
         // Here we will gather up the morph type and ID for the relationship so that we
@@ -142,12 +118,6 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
             list(, $caller) = debug_backtrace(false);
 
             $relation = $caller['function'];
-        }
-
-        // Check if it is a relation with an original model.
-        if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
-        {
-            return parent::belongsTo($related, $foreignKey, $otherKey, $relation);
         }
 
         // If no foreign key was supplied, we can use a backtrace to guess the proper
@@ -233,12 +203,6 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model {
         if (is_null($relation))
         {
             $relation = $this->getBelongsToManyCaller();
-        }
-
-        // Check if it is a relation with an original model.
-        if (!is_subclass_of($related, 'Jenssegers\Mongodb\Model'))
-        {
-            return parent::belongsToMany($related, $collection, $foreignKey, $otherKey, $relation);
         }
 
         // First, we'll need to determine the foreign key and "other key" for the
